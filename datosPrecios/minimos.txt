@@ -1,0 +1,1 @@
+{"fecha": "2024-06-20", "hour": "16-17", "is-cheap": true, "price": 111.96}

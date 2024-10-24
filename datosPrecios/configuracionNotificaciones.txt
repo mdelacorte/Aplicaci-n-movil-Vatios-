@@ -1,0 +1,1 @@
+{"hora_precios_dia": "16:11", "tiempo_bajo_x": "49", "precios_bajo_x": "180", "numero_precios_dia_barato_x": "5", "hora_precios_dia_barato_x": "16:12", "tramo_horas_baratas": "6", "rango_horas_baratas_para_tramo": "3", "precio_minimo_imagen": "10", "precio_maximo_imagen": "100", "numero_precios_economicos": "8"}

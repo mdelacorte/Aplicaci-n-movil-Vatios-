@@ -1,0 +1,1 @@
+{"boolean_precios_dia": true, "boolean_precio_mas_bajo_x": true, "boolean_horas_mas_baratas_dia": true, "boolean_tramo_horas_mas_baratas_dia": true, "boolean_mostrar_todos_los_precios": true, "boolean_editar_imagen_precios": true}

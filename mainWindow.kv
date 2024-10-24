@@ -1,0 +1,1069 @@
+#:kivy 2.1.0
+#:import Factory kivy.factory.Factory
+#:import utils kivy.utils
+#:import images_path kivymd.images_path
+
+WindowManager:
+    HomeScreen:
+        name:"home_screen"
+    SettingScreen:
+        name:"setting_screen"
+    ElectrodomesticoScreen:
+        name:"electrodomestico_screen"
+    AlarmaScreen:
+        name:"alarma_screen"
+    MinimosYMaximosDia:
+        name:"minimosYmaximosDia"
+    PrecioBajo:
+        name:"precioBajo"
+    HorasBaratas:
+        name:"horasBaratas"
+    EditarImagenPrecios:
+        name:"editarImagenPrecios"
+    HorasEconomicas:
+        name:"horasEconomicas"
+    AnadirElectrodomestico:
+        name: "añadirElectrodomestico"
+#popups de alarmas
+<MinutosAntesPrecioBajo>:
+    MDTextField:
+        id : tiempo_bajo_x
+        helper_text_mode: "on_error"
+        pos_hint : {'center_x':.5,'center_y':.1}
+<PrecioMasBajo>:
+    MDTextField:
+        id : precios_bajo_x
+        helper_text_mode: "on_error"
+        pos_hint : {'center_x':.5,'center_y':.1}
+<PrecioEconomico>:
+    MDTextField:
+        id : numero_precios_dia_barato_x
+        helper_text_mode: "on_error"
+        pos_hint : {'center_x':.5,'center_y':.1}
+#dialogs de ajustes
+<PrecioMinimoImagen>:
+    MDTextField:
+        id : precio_minimo_imagen
+        helper_text_mode: "on_error"
+        pos_hint : {'center_x':.5,'center_y':.1}
+<PrecioMaximoImagen>:
+    MDTextField:
+        id : precio_maximo_imagen
+        helper_text_mode: "on_error"
+        pos_hint : {'center_x':.5,'center_y':.1}
+<NumeroPrecioEconomico>:
+    MDTextField:
+        id : numero_precios_economicos
+        helper_text_mode: "on_error"
+        pos_hint : {'center_x':.5,'center_y':.1}
+#dialogos electrodomesticos
+<NombreElectrodomestico>:
+    MDTextField:
+        id : nombre_electrodomestico
+        pos_hint : {'center_x':.5,'center_y':.1}
+<GastoElectrodomestico>:
+    MDTextField:
+        id : gasto_electrodomestico
+        helper_text_mode: "on_error"
+        pos_hint : {'center_x':.5,'center_y':.1}
+#########################
+## PAGINAS PRINCIPALES ##
+#########################
+<HomeScreen>:
+    md_bg_color:56/255,40/255,81/255,1
+    MDBoxLayout:
+        orientation:'vertical'
+        #PARTE DE ARRIBA DEL TODO DE LA APLICACION
+        MDGridLayout:
+            size_hint_y:.25
+            cols:1
+            padding:[dp(10),dp(10),dp(10),dp(10)]
+            spacing:dp(10)
+            ElementCard:
+                id: precio_actual
+                image:"iconos/precio_malo.png"
+                text:"Ahora"
+                subtext:"Precio"
+                items_count:"Hora"
+        #MAXIMOS Y MINIMOS
+        MDGridLayout:
+            size_hint_y:.25
+            cols:2
+            padding:[dp(10),dp(10),dp(10),dp(10)]
+            spacing:dp(10)
+            ElementCard:
+                id: precio_minimo
+                image:"iconos/precio_malo.png"
+                text:"Minimo"
+                subtext:"Precio"
+                items_count:"Hora"
+            ElementCard:
+                id: precio_maximo
+                image:"iconos/precio_malo.png"
+                text:"Maximo"
+                subtext:"Precio"
+                items_count:"Hora"
+
+        MDGridLayout:
+            size_hint_y:.06
+            cols:1
+            spacing:dp(10)
+            padding:[dp(10),dp(10),dp(10),dp(10)]
+            MDLabel:
+                pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                size_hint: (1, 1)
+                text: "Fecha"
+                halign: 'center'
+                valign: 'middle'
+                id:fecha_label
+                color: 181,178,178,0.75
+
+        #LISTA DE HORAS E INFORMACION
+        ScrollView:  
+            pos_hint: {'center_x': 0.5,'center_y': 0.50} 
+            padding:6
+            canvas.before:
+                Color:
+                    rgb: utils.get_color_from_hex("#F5F5F1")
+                RoundedRectangle:
+                    size:self.size
+                    pos:self.pos
+                    radius:[18]
+            MDGridLayout:
+                size_hint: (1, 0.1)
+                background_color:(0,0,0,0)
+                background_normal:''
+                canvas.before:
+                    Color:
+                        rgb: utils.get_color_from_hex("#F5F5F1")
+                    RoundedRectangle:
+                        size:self.size
+                        pos:self.pos
+                        radius:[18]
+                id: informacion_precio_hora
+                cols:1
+                spacing: 10
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_height: '100dp'#el tamaño 50 es super pequeño
+                row_force_default: True
+        
+        #IMAGEN DE NOTIS, ACTUAL Y AJUSTES
+        MDBoxLayout:
+            orientation:'horizontal'
+            pos_hint: {'center_x': 0.5,'center_y': 0.50} 
+            size_hint: (1, 0.15)
+            padding:6
+            MDIconButton:
+                icon:"flash"          
+                on_release:
+                    app.root.current = "home_screen"
+                size_hint: 1, 1
+                pos_hint: {'center_x': 0.70,'center_y': 0.5}
+            #alarmas
+            MDIconButton:
+                icon:"plus-circle"
+                on_release:
+                    app.root.current = "electrodomestico_screen"
+                size_hint: 1, 1
+                pos_hint: {'center_x': 0.50,'center_y': 0.5}
+            #setting
+            MDIconButton:
+                icon:"flower"
+                on_release:
+                    app.root.current = "setting_screen"
+                size_hint: 1, 1
+                pos_hint: {'center_x': 0.50,'center_y': 0.5}
+
+
+
+<SettingScreen>:
+    md_bg_color:56/255,40/255,81/255,1
+    MDBoxLayout:
+        orientation:'vertical'
+        #PARTE DE ARRIBA DEL TODO DE LA APLICACION
+        MDGridLayout:
+            size_hint_y:.25
+            cols:1
+            padding:[dp(10),dp(10),dp(10),dp(10)]
+            spacing:dp(10)
+            MDLabel:
+                text: "AJUSTES"
+                adaptive_height: True
+                halign:"center"
+            #BOTON VER TODOS LOS PRECIOS
+            MDCard:
+                size_hint_y:None
+                height:"70dp"
+                orientation:"vertical"
+                radius:20
+                padding:"10dp"
+                MDFloatLayout:
+                    #TIPO
+                    MDLabel:
+                        text: "Precios del Día"
+                        font_style:"Subtitle1"
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5,'center_y': 0.55}
+                        halign: 'left'
+                        valign: 'middle'
+                    #PRECIO
+                    MDLabel:
+                        text: "Ver todos los precios del día"
+                        font_style:"Caption"
+                        halign:"left"
+                        valign: 'middle'
+                        size_hint: 1, 1
+                        color: 181,178,178,0.75
+                        pos_hint: {'center_x': 0.5,'center_y': 0.3}
+                    #IMAGEN PRECIO
+                    ImageButton:
+                        id: switch_mostrar_todos_los_precios
+                        on_release:
+                            root.switch_click(self,4)
+                        source:"iconos/boton_off.png"
+                        size_hint: .5, .75
+                        pos_hint: {'center_x': 0.85,'center_y': 0.5}
+            MDCard:
+                size_hint_y:None
+                height:"70dp"
+                orientation:"vertical"
+                radius:20
+                padding:"10dp"
+                MDFloatLayout:
+                    #TIPO
+                    MDLabel:
+                        text: "Ubicación"
+                        font_style:"Subtitle1"
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5,'center_y': 0.75}
+                        halign: 'left'
+                        valign: 'middle'
+                    MDIcon:
+                        icon:""  
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5,'center_y': 0.75}
+
+            		MDLabel:
+                        text: "Península, Canarias y Baleares"
+                        font_style:"Caption"
+                        halign:"left"
+                        valign: 'middle'
+                        size_hint: 0.4, 1
+                        color: 181,178,178,0.75
+                        pos_hint: {'center_x': 0.2,'center_y': 0.15}
+                    CheckBox:
+                        id: peninsula
+                        group: "ubicacion"
+                        allow_no_selection: False
+                        size_hint:  1, 1
+                        pos_hint: {'center_x': 0.45,'center_y': 0.15}
+                        on_active: root.checkbox_click(self, self.active, "peninsula")
+                    MDLabel:
+                        text: "Ceuta y Melilla"
+                        font_style:"Caption"
+                        halign:"left"
+                        valign: 'middle'
+                        size_hint: 0.4, 1
+                        color: 181,178,178,0.75
+                        pos_hint: {'center_x': 0.78,'center_y': 0.15}
+                    CheckBox:
+                        id: cym
+                        group: "ubicacion"
+                        allow_no_selection: False
+                        size_hint:  1, 1
+                        pos_hint: {'center_x': 0.93,'center_y': 0.15}
+                        on_active: root.checkbox_click(self, self.active, "cym")
+            
+            #EDITAR PRECIOS DEL DIA
+            AjustesCard:
+                text: "Editar Precios"
+                subtext:"Configuracion de los precios maximos y minimos"
+                image:"chevron-right"
+                on_release:
+                    app.root.current="editarImagenPrecios"     
+            #Consulta Horarios Economicos
+            AjustesCard:
+                text: "Horas Económicas"
+                subtext:"Consulta de las horas mas economicas de Hoy"
+                image:"chevron-right"
+                on_release:
+                    app.root.current="horasEconomicas"   
+            #Consulta Horarios Economicos
+            
+            #BOTON NOTIFICACIONES 
+            AjustesCard:
+                text: "Notificaciones"
+                subtext:"Configuración de notificaciones"
+                image:"chevron-right"
+                on_release:
+                    app.root.current="alarma_screen"   
+                    
+
+        #IMAGEN DE NOTIS, ACTUAL Y AJUSTES
+        MDBoxLayout:
+            orientation:'horizontal'
+            pos_hint: {'center_x': 0.5,'center_y': 0.2} 
+            size_hint: (1, 0.15)
+            padding:6
+            MDIconButton:
+                icon:"flash"          
+                on_release:
+                    app.root.current = "home_screen"
+                size_hint: 0.55, 0.35
+                pos_hint: {'center_x': 0.70,'center_y': 0.1}
+            #alarmas
+            MDIconButton:
+                icon:"plus-circle"
+                on_release:
+                    app.root.current = "electrodomestico_screen"
+                size_hint:0.55, 0.35
+                pos_hint: {'center_x': 0.50,'center_y': 0.1}
+            #setting
+            MDIconButton:
+                icon:"flower"
+                on_release:
+                    app.root.current = "setting_screen"
+                size_hint: 0.55, 0.35
+                pos_hint: {'center_x': 0.50,'center_y': 0.1}
+
+<ElectrodomesticoScreen>:
+    md_bg_color:56/255,40/255,81/255,1
+    MDBoxLayout:
+        orientation:'vertical'
+        #PARTE DE ARRIBA DEL TODO DE LA APLICACION
+        MDGridLayout:
+            size_hint_y:.5
+            cols:1
+            padding:[dp(10),dp(10),dp(10),dp(10)]
+            spacing:dp(10)
+            MDLabel:
+                text: "MIS ELECTRODOMÉSTICOS"
+                adaptive_height: True
+                halign:"center"
+
+            #EDITAR PRECIOS DEL DIA
+            AjustesCard:
+                text: "Añadir Electrodoméstico"
+                image:"plus-circle"
+                on_release:
+                    app.root.current = "añadirElectrodomestico"
+                        #EDITAR PRECIOS DEL DIA
+            CambioCard:
+                md_bg_color:250/255,250/255,250/255,1 #MISMO COLOR FONDO
+                id: datos_hora_electrodomestico
+                text: "Precio de las h es de "
+                otroText: "$/kwh"
+                subtext:"Cambiar Hora"
+                image:"alarm"
+                on_release:
+                    root.show_time_picker()
+
+        #SCROOL VIEW DE LOS ELECTRODOMESTICOS QUE HA INSERTADO EL USUARIO   
+        ScrollView:  
+            pos_hint: {'center_x': 0.5,'center_y': 0.10} 
+            MDGridLayout:
+                id: informacion_electrodomesticos  
+                size_hint: (1, 1)
+                cols:1
+                padding:[dp(10),dp(10),dp(10),dp(10)]
+                spacing:dp(10)
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_height: '70dp'#el tamaño 50 es super pequeño
+                row_force_default: True
+                
+        #IMAGEN DE NOTIS, ACTUAL Y AJUSTES
+        MDBoxLayout:
+            orientation:'horizontal'
+            pos_hint: {'center_x': 0.5,'center_y': 0.15} 
+            size_hint: (1, 0.15)
+            padding:6
+            MDIconButton:
+                icon:"flash"          
+                on_release:
+                    app.root.current = "home_screen"
+                size_hint: 0.55, 0.35
+                pos_hint: {'center_x': 0.70,'center_y': 0.4}
+            #alarmas
+            MDIconButton:
+                icon:"plus-circle"
+                on_release:
+                    app.root.current = "electrodomestico_screen"
+                size_hint:0.55, 0.35
+                pos_hint: {'center_x': 0.50,'center_y': 0.4}
+            #setting
+            MDIconButton:
+                icon:"flower"
+                on_release:
+                    app.root.current = "setting_screen"
+                size_hint: 0.55, 0.35
+                pos_hint: {'center_x': 0.50,'center_y': 0.4}
+    
+<AlarmaScreen>:
+    md_bg_color:56/255,40/255,81/255,1
+    MDBoxLayout:
+        orientation:'vertical'
+        #PARTE DE ARRIBA DEL TODO DE LA APLICACION
+        MDGridLayout:
+            size_hint_y:.25
+            cols:1
+            padding:[dp(10),dp(10),dp(10),dp(10)]
+            spacing:dp(10)
+            md_bg_color: 245,245,241,1
+            MDCard:
+                size_hint_y:None
+                height:"50dp"
+                orientation:"vertical"
+                radius:20
+                padding:"10dp"
+                rgb: utils.get_color_from_hex("#F5F5F1")
+                MDFloatLayout:
+                    #TIPO
+                    MDLabel:
+                        text: "CONFIGURACION NOTIFICACIONES"
+                        adaptive_height: True
+                        halign:"center"
+                        size_hint: 0.8, 0.8
+                        pos_hint: {'center_x': 0.51,'center_y': 0.75}
+                    #IMAGEN 
+                    MDIconButton:
+                        icon:"undo"          
+                        on_release:
+                            app.root.current = "setting_screen"
+                        size_hint: 0.05, 0.6
+                        pos_hint: {'center_x': 0.08,'center_y': 0.75}
+            #MINIMOS Y MAXIMOS DEL DIA
+            AjustesCard:
+                text: "Mínimos y Máximos del Dia"
+                subtext:"Notificación configurable de los precios máximos y mínimos del dia"
+                image:"chevron-right"
+                on_release:
+                    app.root.current="minimosYmaximosDia" 
+            #Precio Bajo
+            AjustesCard:
+                text: "Precio Bajo"
+                subtext:"Notificación configurable cuando el precio baja de lo que establezca"
+                image:"chevron-right"
+                on_release:
+                    app.root.current="precioBajo" 
+            #HORAS BARATAS
+            AjustesCard:
+                text: "Horas Baratas"
+                subtext:"Notificación de cuando son las horas mas baratas del dia"
+                image:"chevron-right"
+                on_release:
+                    app.root.current="horasBaratas" 
+
+#############################
+## AÑADIR ELECTRODOMESTICO ##
+#############################
+<AnadirElectrodomestico>:
+    md_bg_color:56/255,40/255,81/255,1
+    MDBoxLayout:
+        orientation:'vertical'
+        #PARTE DE ARRIBA DEL TODO DE LA APLICACION
+        MDGridLayout:
+            size_hint_y:.25
+            cols:1
+            padding:[dp(10),dp(10),dp(10),dp(10)]
+            spacing:dp(10)
+            MDCard:
+                size_hint_y:None
+                height:"50dp"
+                orientation:"vertical"
+                radius:20
+                padding:"10dp"
+                rgb: utils.get_color_from_hex("#F5F5F1")
+                MDFloatLayout:
+                    #TIPO
+                    MDLabel:
+                        text: "EDITAR DATOS DEL ELECTRODOMESTICO"
+                        adaptive_height: True
+                        halign:"center"
+                        size_hint: 0.78, 0.8
+                        pos_hint: {'center_x': 0.52,'center_y': 0.5}
+            AjustesCard:
+                id: nombre_electrodomestico
+                text: "Nombre:"
+                subtext:"Añadir nombre."
+                image:"chevron-right"
+                on_release:
+                    root.show_custom_dialog(self,1)
+            AjustesCard:
+                id: gasto_electrodomestico
+                text: "Gasto por hora :"
+                subtext:"Añadir en Kwh, gasto por hora de el electrodoméstico."
+                image:"chevron-right"
+                on_release:
+                    root.show_custom_dialog(self,2)
+                
+        #SCROOL VIEW DE LOS ELECTRODOMESTICOS QUE HA INSERTADO EL USUARIO   
+        #IMAGEN DE NOTIS, ACTUAL Y AJUSTES
+        MDBoxLayout:
+            orientation:'horizontal'
+            pos_hint: {'center_x': 0.5,'center_y': 0.2} 
+            size_hint: (0.75, 0.75)
+            padding:6
+            spacing:20
+            MDRectangleFlatButton:
+                text:"Cancel" 
+                on_release:
+                    root.close_and_delete(self)
+                    app.root.current = "electrodomestico_screen"
+                size_hint: 0.15, 0.15
+                pos_hint: {'center_x': 0.50,'center_y': 0.15}
+            #setting
+            MDRectangleFlatButton:
+                text:"Añadir"
+                on_release:
+                    if root.update_database(self): app.root.current = "electrodomestico_screen"
+                    else: root.dialogo_informacion_mal_insertada(self)
+                    
+                size_hint: 0.15, 0.15
+                pos_hint: {'center_x': 0.50,'center_y': 0.15}
+            
+###################
+## NOTIFICACIONES##
+###################
+<MinimosYMaximosDia>:
+    md_bg_color:56/255,40/255,81/255,1
+    MDBoxLayout:
+        orientation:'vertical'
+        #PARTE DE ARRIBA DEL TODO DE LA APLICACION
+        MDGridLayout:
+            size_hint_y:.25
+            cols:1
+            padding:[dp(10),dp(10),dp(10),dp(10)]
+            spacing:dp(10)
+            MDCard:
+                size_hint_y:None
+                height:"50dp"
+                orientation:"vertical"
+                radius:20
+                padding:"10dp"
+                rgb: utils.get_color_from_hex("#F5F5F1")
+                MDFloatLayout:
+                    #TIPO
+                    MDLabel:
+                        text: "MINIMOS Y MAXIMOS DEL DIA"
+                        adaptive_height: True
+                        halign:"center"
+                        size_hint: 0.78, 0.8
+                        pos_hint: {'center_x': 0.52,'center_y': 0.5}
+                    #IMAGEN 
+                    MDIconButton:
+                        icon:"undo"          
+                        on_release:
+                            app.root.current = "alarma_screen"
+                        size_hint: 0.1, 0.6
+                        pos_hint: {'center_x': 0.08,'center_y': 0.5}
+
+            #SWITCH MINIMOS Y MAXIMOS
+            MDCard:
+                size_hint_y:None
+                height:"70dp"
+                orientation:"vertical"
+                radius:20
+                padding:"10dp"
+                MDFloatLayout:
+                    #TIPO
+                    MDLabel:
+                        text: "Precios del Día"
+                        font_style:"Subtitle1"
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5,'center_y': 0.65}
+                        halign: 'left'
+                        valign: 'middle'
+                    #IMAGEN PRECIO
+                    ImageButton:
+                        id: switch_precios_dia
+                        on_release:
+                            root.switch_click(self,0)
+                        source:"iconos/boton_off.png"
+                        size_hint: .5, .75
+                        pos_hint: {'center_x': 0.85,'center_y': 0.5}
+                        #INFORMACION DE LA ALARMA MINIMOS Y MAXIMOS DEL DIA
+            #HORAS BARATAS
+            AjustesCard:
+                id: hora_precios_dia
+                text: "Hora Alarma :"
+                subtext:"Editar hora a la que recibirá la notificación"
+                image:"chevron-right"
+                on_release:
+                    root.show_time_picker(0)
+
+
+<PrecioBajo>:
+    md_bg_color:56/255,40/255,81/255,1
+    MDBoxLayout:
+        orientation:'vertical'
+        #PARTE DE ARRIBA DEL TODO DE LA APLICACION
+        MDGridLayout:
+            size_hint_y:.25
+            cols:1
+            padding:[dp(10),dp(10),dp(10),dp(10)]
+            spacing:dp(10)
+            MDCard:
+                size_hint_y:None
+                height:"50dp"
+                orientation:"vertical"
+                radius:20
+                padding:"10dp"
+                rgb: utils.get_color_from_hex("#F5F5F1")
+                MDFloatLayout:
+                    #TIPO
+                    MDLabel:
+                        text: "PRECIO MAS BAJO DE X"
+                        adaptive_height: True
+                        halign:"center"
+                        size_hint: 0.78, 0.8
+                        pos_hint: {'center_x': 0.52,'center_y': 0.6}
+                    #IMAGEN 
+                    MDIconButton:
+                        icon:"undo"          
+                        on_release:
+                            app.root.current = "alarma_screen"
+                        size_hint: 0.1, 0.6
+                        pos_hint: {'center_x': 0.08,'center_y': 0.6}
+
+            #SWITCH MINIMOS Y MAXIMOS
+            MDCard:
+                size_hint_y:None
+                height:"70dp"
+                orientation:"vertical"
+                radius:20
+                padding:"10dp"
+                MDFloatLayout:
+                    #TIPO
+                    MDLabel:
+                        text: "Precios Bajo"
+                        font_style:"Subtitle1"
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                        halign: 'left'
+                        valign: 'middle'
+                    #IMAGEN PRECIO
+                    ImageButton:
+                        id: switch_precio_mas_bajo_x
+                        on_release:
+                            root.switch_click(self,1)
+                        source:"iconos/boton_off.png"
+                        size_hint: .5, .75
+                        pos_hint: {'center_x': 0.85,'center_y': 0.5}
+                        #INFORMACION DE LA ALARMA MINIMOS Y MAXIMOS DEL DIA
+            #HORAS BARATAS
+            AjustesCard:
+                id: tiempo_bajo_x
+                text: "Minutos Antes :"
+                subtext:"Editar minutos antes, la app te avisará de que el precio ha bajado"
+                image:"chevron-right"
+                on_release:
+                    root.show_custom_dialog(self,1)
+            AjustesCard:
+                id: precios_bajo_x
+                text: "Precio :"
+                subtext:"Editar a el precio mínimo en el que sonará la alarma"
+                image:"chevron-right"
+                on_release:
+                    root.show_custom_dialog(self,2)
+
+
+<HorasBaratas>:
+    md_bg_color:56/255,40/255,81/255,1
+    MDBoxLayout:
+        orientation:'vertical'
+        #PARTE DE ARRIBA DEL TODO DE LA APLICACION
+        MDGridLayout:
+            size_hint_y:.25
+            cols:1
+            padding:[dp(10),dp(10),dp(10),dp(10)]
+            spacing:dp(10)
+            MDCard:
+                size_hint_y:None
+                height:"50dp"
+                orientation:"vertical"
+                radius:20
+                padding:"10dp"
+                rgb: utils.get_color_from_hex("#F5F5F1")
+                MDFloatLayout:
+                    #TIPO
+                    MDLabel:
+                        text: "CONSULTA DE LAS HORAS MAS BARATAS DEL DIA"
+                        adaptive_height: True
+                        halign:"center"
+                        size_hint: 0.78, 0.8
+                        pos_hint: {'center_x': 0.52,'center_y': 0.6}
+                    #IMAGEN 
+                    MDIconButton:
+                        icon:"undo"          
+                        on_release:
+                            app.root.current = "alarma_screen"
+                        size_hint: 0.1, 0.6
+                        pos_hint: {'center_x': 0.08,'center_y': 0.6}
+
+            #SWITCH MINIMOS Y MAXIMOS
+            MDCard:
+                size_hint_y:None
+                height:"70dp"
+                orientation:"vertical"
+                radius:20
+                padding:"10dp"
+                MDFloatLayout:
+                    #TIPO
+                    MDLabel:
+                        text: "Horas baratas"
+                        font_style:"Subtitle1"
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                        halign: 'left'
+                        valign: 'middle'
+                    #IMAGEN PRECIO
+                    ImageButton:
+                        id: switch_horas_mas_baratas_dia
+                        on_release:
+                            root.switch_click(self,2)
+                        source:"iconos/boton_off.png"
+                        size_hint: .5, .75
+                        pos_hint: {'center_x': 0.85,'center_y': 0.5}
+                        #INFORMACION DE LA ALARMA MINIMOS Y MAXIMOS DEL DIA
+            #HORAS BARATAS
+            AjustesCard:
+                id: numero_precios_dia_barato_x
+                text: "Número:"
+                subtext:"Editar numero de horas baratas que desea que le aparezcan en la notificación"
+                image:"chevron-right"
+                on_release:
+                    root.show_custom_dialog(self)
+            AjustesCard:
+                id: hora_precios_dia_barato_x
+                text: "Hora Alarma:"
+                subtext:"Editar hora a la que le aparecera la notificación"
+                image:"chevron-right"
+                on_release:
+                    root.show_time_picker(self,4)
+#AJUSTES IMAGEN PRECIOS
+<EditarImagenPrecios>:
+    md_bg_color:56/255,40/255,81/255,1
+    MDBoxLayout:
+        orientation:'vertical'
+        #PARTE DE ARRIBA DEL TODO DE LA APLICACION
+        MDGridLayout:
+            size_hint_y:.25
+            cols:1
+            padding:[dp(10),dp(10),dp(10),dp(10)]
+            spacing:dp(10)
+            MDCard:
+                size_hint_y:None
+                height:"50dp"
+                orientation:"vertical"
+                radius:20
+                padding:"10dp"
+                rgb: utils.get_color_from_hex("#F5F5F1")
+                MDFloatLayout:
+                    #TIPO
+                    MDLabel:
+                        text: "ESTABLECER PRECIOS MÍNIMOS Y MÁXIMOS"
+                        adaptive_height: True
+                        halign:"center"
+                        size_hint: 0.78, 0.8
+                        pos_hint: {'center_x': 0.52,'center_y': 0.6}
+                    #IMAGEN 
+                    MDIconButton:
+                        icon:"undo"          
+                        on_release:
+                            app.root.current = "setting_screen"
+                        size_hint: 0.2, 0.6
+                        pos_hint: {'center_x': 0.08,'center_y': 0.6}
+
+            #SWITCH MINIMOS Y MAXIMOS
+            MDCard:
+                size_hint_y:None
+                height:"70dp"
+                orientation:"vertical"
+                radius:20
+                padding:"10dp"
+                MDFloatLayout:
+                    #TIPO
+                    MDLabel:
+                        text: "Configuracion de los Precios"
+                        font_style:"Subtitle1"
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5,'center_y': 0.7}
+                        halign: 'left'
+                        valign: 'middle'
+                    MDLabel:
+                        text: "En caso de estar desactivada, usará el precio medio del dia para indicarlo"
+                        font_style:"Caption"
+                        color: 181,178,178,0.75
+                        multiline: True
+                        size_hint: 0.75, 1
+                        pos_hint: {'center_x': 0.38,'center_y': 0.1}
+                        halign: 'left'
+                        valign: 'middle'
+                    #IMAGEN PRECIO
+                    ImageButton:
+                        id: switch_editar_imagen_precios
+                        on_release:
+                            root.switch_click(self,5)
+                        source:"iconos/boton_off.png"
+                        size_hint: .5, .75
+                        pos_hint: {'center_x': 0.85,'center_y': 0.5}
+                        #INFORMACION DE LA ALARMA MINIMOS Y MAXIMOS DEL DIA
+            #HORAS BARATAS
+            AjustesCard:
+                id: precio_minimo_imagen
+                text: "Precio Mínimo"
+                subtext:"Precio más bajo o igual, aparecerá en verde."
+                image:"chevron-right"
+                on_release:
+                    root.show_custom_dialog(self,1)
+            AjustesCard:
+                id: precio_maximo_imagen
+                text: "Precio Maximo"
+                subtext:"Precio más alto o igual, aparecerá en rojo."
+                image:"chevron-right"
+                on_release:
+                    root.show_custom_dialog(self,2)
+            MDCard:
+                size_hint_y:None
+                height:"20dp"
+                orientation:"vertical"
+                radius:20
+                padding:"10dp"
+                MDFloatLayout:
+                    #TIPO
+                    MDLabel:
+                        text:"Si el número esta entre el máximo y el mínimo establecido, aparecerá en naranja"
+                        font_style:"Caption"
+                        color: 181,178,178,0.75
+                        pos_hint: {'center_x': 0.5,'center_y': 0.5}
+
+####################
+## AJUSTES EXTRAS ##
+####################
+#AJUSTES MOSTRAR HORAS ECONOMICAS
+<HorasEconomicas>:
+    md_bg_color:56/255,40/255,81/255,1
+    MDBoxLayout:
+        orientation:'vertical'
+        #PARTE DE ARRIBA DEL TODO DE LA APLICACION
+        MDGridLayout:
+            size_hint_y:.25
+            cols:1
+            padding:[dp(10),dp(10),dp(10),dp(10)]
+            spacing:dp(10)
+            MDCard:
+                size_hint_y:None
+                height:"50dp"
+                orientation:"vertical"
+                radius:20
+                padding:"10dp"
+                rgb: utils.get_color_from_hex("#F5F5F1")
+                MDFloatLayout:
+                    #TIPO
+                    MDLabel:
+                        text: "CONSULTA LAS HORAS ECONÓMICAS"
+                        adaptive_height: True
+                        halign:"center"
+                        size_hint: 0.78, 0.8
+                        pos_hint: {'center_x': 0.52,'center_y': 0.6}
+                    #IMAGEN 
+                    MDIconButton:
+                        icon:"undo"          
+                        on_release:
+                            app.root.current = "setting_screen"
+                        size_hint: 0.3, 0.6
+                        pos_hint: {'center_x': 0.08,'center_y': 0.6}
+            #HORAS BARATAS
+            AjustesCard:
+                id: numero_precios_economicos
+                text: "Precios a consultar:"
+                subtext:"Insertar el numero de precios baratos que quiere consultar "
+                image:"chevron-right"
+                on_release:
+                    root.show_custom_dialog(self)
+            
+            #AQUI APARECERÁN LOS QUE HA BUSCADO EL USUARIO
+            ScrollView:  
+                pos_hint: {'center_x': 0.5,'center_y': 0.50} 
+                padding:6
+                canvas.before:
+                    Color:
+                        rgb: utils.get_color_from_hex("#F5F5F1")
+                    RoundedRectangle:
+                        size:self.size
+                        pos:self.pos
+                        radius:[18]
+                MDGridLayout:
+                    size_hint: (1, 1)
+                    background_color:(0,0,0,0)
+                    background_normal:''
+                    canvas.before:
+                        Color:
+                            rgb: utils.get_color_from_hex("#F5F5F1")
+                        RoundedRectangle:
+                            size:self.size
+                            pos:self.pos
+                            radius:[18]
+                    id: informacion_precio_economico
+                    cols:1
+                    spacing: 10
+                    size_hint_y: None
+                    height: self.minimum_height
+                    row_default_height: '100dp'#el tamaño 50 es super pequeño
+                    row_force_default: True
+#AÑADIDOS
+<ElementCard@MDCard>:
+    md_bg_color:1,1,1,1
+    padding:dp(15)
+    spacing:dp(15)
+    radius:dp(25)
+    ripple_behavior: True
+    image:''
+    text:""
+    items_count:""
+    subtext:''
+    orientation:'vertical'
+
+    MDFloatLayout:
+        #TIPO
+        MDLabel:
+            text:root.text
+            font_style:"Caption"
+            size_hint: 1, 1
+            pos_hint: {'center_x': 0.5,'center_y': 0.9}
+            halign: 'left'
+            valign: 'middle'
+            color: 181,178,178,0.75
+        #IMAGEN PRECIO
+        Image:
+            source:root.image
+            size_hint: .5, .75
+            pos_hint: {'center_x': 1,'center_y': 0.5}
+        #PRECIO
+        MDLabel:
+            halign:"center"
+            font_style:"Body2"
+            bold: True
+            text:root.subtext
+            size_hint: 1, 1
+            pos_hint: {'center_x': 0.5,'center_y': 0.5}
+        #HORA
+        MDLabel:
+            halign:"center"
+            text:root.items_count
+            font_style:"Caption"
+            size_hint: 1,1
+            pos_hint: {'center_x': 0.5,'center_y': 0.15}
+
+#AÑADIDOS
+<AjustesCard@MDCard>:
+    size_hint_y:None
+    height:"70dp"
+    orientation:"vertical"
+    radius:20
+    padding:"10dp"
+    image:''
+    text:""
+    action:""
+    subtext:''
+    MDFloatLayout:
+        #TIPO
+        MDLabel:
+            text:root.text
+            font_style:"Subtitle1"
+            size_hint: 1, 1
+            pos_hint: {'center_x': 0.5,'center_y': 0.65}
+            halign: 'left'
+            valign: 'middle'
+        #PRECIO
+        MDLabel:
+            text:root.subtext
+            font_style:"Caption"
+            halign:"left"
+            valign: 'middle'
+            size_hint: 0.8, 1
+            color: 181,178,178,0.75
+            pos_hint: {'center_x': 0.4,'center_y': 0.24}
+        #IMAGEN PRECIO
+        MDIcon:
+            icon:root.image
+            size_hint: .5, .75
+            pos_hint: {'center_x': 0.88,'center_y': 0.5}
+
+<CambioCard@MDCard>:
+    size_hint_y:None
+    height:"70dp"
+    orientation:"vertical"
+    radius:20
+    padding:"10dp"
+    image:''
+    text:""
+    action:""
+    subtext:''
+    otroText:""
+    MDFloatLayout:
+        #TIPO
+        MDLabel:
+            text:root.text
+            font_style:"Subtitle1"
+            size_hint: 0.8, 1
+            pos_hint: {'center_x': 0.4,'center_y': 0.9}
+            halign: 'left'
+            valign: 'middle'
+        #PRECIO
+        MDLabel:
+            text:root.otroText
+            font_style:"Subtitle1"
+            bold:True
+            size_hint: 0.8, 1
+            pos_hint: {'center_x': 0.4,'center_y': 0.55}
+            halign: 'left'
+            valign: 'middle'
+        MDLabel:
+            text:root.subtext
+            font_style:"Caption"
+            halign:"left"
+            valign: 'middle'
+            size_hint: 0.8, 1
+            color: 181,178,178,0.75
+            pos_hint: {'center_x': 0.4,'center_y': 0.2}
+        #IMAGEN PRECIO
+        MDIcon:
+            icon:root.image
+            size_hint: .5, .75
+            pos_hint: {'center_x': 0.88,'center_y': 0.5}
+
+<ZonaHoraria@MDCard>:
+    size_hint_y:None
+    height:"70dp"
+    orientation:"vertical"
+    radius:20
+    padding:"10dp"
+    image:''
+    text:""
+    option1:""
+    option2:''
+    MDFloatLayout:
+        #TIPO
+        MDLabel:
+            text:root.text
+            font_style:"Subtitle1"
+            size_hint: 0.8, 1
+            pos_hint: {'center_x': 0.4,'center_y': 0.9}
+            halign: 'left'
+            valign: 'middle'
+        #PRECIO
+        MDFlatButton:
+            text:root.option1
+            font_style:"Subtitle1"
+            size_hint: 0.8, 1
+            pos_hint: {'center_x': 0.9,'center_y': 0.9}
+            halign: 'left'
+        MDFlatButton:
+            text:root.option2
+            font_style:"Subtitle1"
+            size_hint: 0.8, 1
+            pos_hint: {'center_x': 0.95,'center_y': 0.9}
+            halign: 'left'

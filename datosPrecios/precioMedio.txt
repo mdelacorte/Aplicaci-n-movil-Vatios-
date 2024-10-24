@@ -1,0 +1,1 @@
+{"date": "27-04-2023", "market": "PVPC", "price": 181.87, "units": "\u20ac/MWh"}
